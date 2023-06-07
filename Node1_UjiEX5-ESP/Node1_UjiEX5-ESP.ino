@@ -37,7 +37,7 @@ const char *soft_ap_password = "123456789"; /*Create Password for ESP32 AP*/
 
 // Log-normal shadowing model parameters
 float referenceDistance = 1.0; // Referensi jarak dalam meters
-float referenceRSSI = -20; // RSSI dengan referensi jarak (do)
+float referenceRSSI = -20.0; // RSSI dengan referensi jarak (do)
 float pathLossExponent = 2.5; // Path loss exponent
 float shadowingStdDev = 2.5; // Standard deviation di log-normal shadowing dalam satuan dB
 const float transmitterPower = 2.0; // Transmitter power in dBm
@@ -46,7 +46,7 @@ const float transmitterPower = 2.0; // Transmitter power in dBm
 float LNSM(float rssi) {
   // Calculate distance using log-normal shadowing model
   float shadowing = lognormalShadowing(shadowingStdDev);
-  float formula = -(transmitterPower - ((referenceRSSI - rssi) + shadowingStdDev)) / (10 * pathLossExponent);
+  float formula = -(transmitterPower - ((referenceRSSI - rssi) + shadowing)) / (10 * pathLossExponent);
   Serial.print("Formula: ");
   Serial.println(formula);
   float distance = pow(10, formula) * referenceDistance;
